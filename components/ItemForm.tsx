@@ -129,6 +129,9 @@ export default function ItemForm({ type }: ItemFormProps) {
           id="description"
           className={styles.textarea}
           placeholder={type === "lost" ? "Describe your item..." : "Describe what you found..."}
+          spellCheck
+          autoCorrect="on"
+          autoCapitalize="sentences"
           {...register("description")}
         />
       </FormField>

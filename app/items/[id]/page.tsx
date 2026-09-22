@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getItemById } from "@/lib/db/items";
+import DeleteItemButton from "@/components/DeleteItemButton";
 import styles from "./page.module.css";
 
 interface ItemDetailPageProps {
@@ -90,6 +91,8 @@ export default async function ItemDetailPage({ params }: ItemDetailPageProps) {
                 </p>
               )}
             </div>
+
+            <DeleteItemButton itemId={item.id} itemName={item.itemName} />
           </div>
         </div>
       </div>

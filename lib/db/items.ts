@@ -78,3 +78,8 @@ export async function getItemById(id: string): Promise<Item | null> {
   const [row] = await db.select().from(items).where(eq(items.id, id)).limit(1);
   return row ? toItem(row) : null;
 }
+
+export async function deleteItem(id: string): Promise<boolean> {
+  const deleted = await db.delete(items).where(eq(items.id, id)).returning({ id: items.id });
+  return deleted.length > 0;
+}

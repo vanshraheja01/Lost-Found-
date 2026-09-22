@@ -8,33 +8,34 @@
 .select {
   width: 100%;
   padding: 13px 15px;
-  border: 1.5px solid #e1e4e9;
+  border: 1.5px solid #cfe0f5;
   border-radius: 10px;
-  font-size: 15px;
+  /* 16px, not 15px: keeps iOS Safari from auto-zooming the page on focus */
+  font-size: 16px;
   font-family: inherit;
-  color: #1f2733;
-  background: #fbfcfe;
+  color: #1c2c40;
+  background: #f2f8fe;
   transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
 }
 
 .input::placeholder,
 .textarea::placeholder {
-  color: #9aa3b2;
+  color: #8ea3bd;
 }
 
 .input:hover,
 .textarea:hover,
 .select:hover {
-  border-color: #b9c1cf;
+  border-color: #9fc3ea;
 }
 
 .input:focus,
 .textarea:focus,
 .select:focus {
   outline: none;
-  border-color: #243b55;
+  border-color: #4a9eea;
   background: #ffffff;
-  box-shadow: 0 0 0 4px rgba(36, 59, 85, 0.12);
+  box-shadow: 0 0 0 4px rgba(74, 158, 234, 0.16);
 }
 
 .textarea {
@@ -43,29 +44,54 @@
   line-height: 1.5;
 }
 
-/* Custom select with a styled chevron, replacing the bare native dropdown */
+/* Custom select: styled chevron in a rounded "chip" that swaps color and
+   rotates on focus, replacing the bare native dropdown */
 .selectWrap {
   position: relative;
 }
 
+.selectWrap::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  width: 30px;
+  height: 30px;
+  transform: translateY(-50%);
+  border-radius: 8px;
+  background: rgba(74, 158, 234, 0.12);
+  pointer-events: none;
+  transition: background 0.18s ease;
+}
+
 .select {
+  position: relative;
+  z-index: 1;
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
-  padding-right: 42px;
+  padding-right: 46px;
   cursor: pointer;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9' fill='none'%3E%3Cpath d='M1 1.5L7 7.5L13 1.5' stroke='%2351607a' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-color: transparent;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='10' viewBox='0 0 16 10' fill='none'%3E%3Cpath d='M1 1.5L8 8.5L15 1.5' stroke='%234a9eea' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
-  background-position: right 16px center;
-  background-size: 13px;
+  background-position: right 15px center;
+  background-size: 15px;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease, transform 0.18s ease;
 }
 
 .select:focus {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9' fill='none'%3E%3Cpath d='M1 1.5L7 7.5L13 1.5' stroke='%23243b55' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='10' viewBox='0 0 16 10' fill='none'%3E%3Cpath d='M1 1.5L8 8.5L15 1.5' stroke='%231c2c40' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+
+.selectWrap:has(.select:focus)::after {
+  background: rgba(74, 158, 234, 0.24);
+  transform: translateY(-50%) rotate(180deg);
 }
 
 .select option {
   color: #1f2733;
+  background: #ffffff;
 }
 
 .select option[value=""] {
@@ -110,15 +136,15 @@
 
 .tabActive {
   background: #ffffff;
-  color: #243b55;
+  color: #2f7dc2;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
 }
 
 .fileInput {
   padding: 10px;
-  border: 1.5px dashed #cdd3dd;
+  border: 1.5px dashed #a9cdef;
   border-radius: 10px;
-  background: #fbfcfe;
+  background: #f2f8fe;
   cursor: pointer;
   font-size: 13.5px;
 }
@@ -177,5 +203,37 @@
 @keyframes spin {
   to {
     transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 480px) {
+  .input,
+  .textarea,
+  .select {
+    padding: 12px 14px;
+  }
+
+  .select {
+    padding-right: 42px;
+  }
+
+  .sectionTitle {
+    margin-top: 26px;
+  }
+
+  .imageTabs {
+    width: 100%;
+  }
+
+  .tab,
+  .tabActive {
+    flex: 1;
+    padding: 10px 12px;
+    text-align: center;
+  }
+
+  .submitButton {
+    padding: 16px;
+    font-size: 15.5px;
   }
 }
