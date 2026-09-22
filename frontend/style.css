@@ -1,0 +1,656 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: "Poppins", sans-serif;
+    min-height: 100vh;
+    color: #ffffff;
+    background: #07111f;
+}
+.navbar {
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 82px;
+
+    display: flex;
+    align-items: center;
+
+    padding: 0 7%;
+
+    background: rgba(5, 15, 30, 0.45);
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+
+    backdrop-filter: blur(12px);
+
+    z-index: 100;
+}
+
+
+
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+
+
+
+.logo-container img {
+    width: 55px;
+    height: 55px;
+
+    object-fit: contain;
+
+    background: #ffffff;
+
+    padding: 5px;
+
+    border-radius: 50%;
+
+    box-shadow:
+        0 0 20px rgba(255, 255, 255, 0.15);
+}
+
+
+.logo-container h2 {
+    font-size: 21px;
+
+    font-weight: 600;
+
+    letter-spacing: 0.3px;
+}
+
+
+.logo-container span {
+    display: block;
+
+    margin-top: 2px;
+
+    font-size: 11px;
+
+    color: rgba(255, 255, 255, 0.7);
+
+    letter-spacing: 1px;
+
+    text-transform: uppercase;
+}
+
+
+
+.hero {
+
+    position: relative;
+
+    min-height: calc(100vh - 65px);
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    text-align: center;
+
+    overflow: hidden;
+
+
+    /* MAIN BACKGROUND IMAGE */
+
+    background-image:
+        url("images/college-bg.jpg");
+
+    background-size: cover;
+
+    background-position: center;
+
+    background-repeat: no-repeat;
+}
+
+
+
+.overlay {
+
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(3, 12, 25, 0.88),
+            rgba(9, 31, 56, 0.72),
+            rgba(2, 10, 20, 0.85)
+        );
+
+    z-index: 1;
+}
+
+
+
+.hero-content {
+
+    position: relative;
+
+    z-index: 2;
+
+    width: 90%;
+
+    max-width: 1100px;
+
+    padding-top: 70px;
+}
+
+
+
+
+.hero-content::before {
+
+    content: "HMR UNIVERSITY";
+
+    display: inline-block;
+
+    margin-bottom: 15px;
+
+    padding: 7px 18px;
+
+    border-radius: 50px;
+
+    background: rgba(255, 255, 255, 0.1);
+
+    border: 1px solid rgba(255, 255, 255, 0.2);
+
+    backdrop-filter: blur(8px);
+
+    font-size: 11px;
+
+    letter-spacing: 2px;
+
+    color: rgba(255, 255, 255, 0.8);
+}
+
+
+
+.hero-content h1 {
+
+    font-size: clamp(42px, 6vw, 72px);
+
+    line-height: 1.1;
+
+    font-weight: 700;
+
+    letter-spacing: -2px;
+
+    margin-bottom: 20px;
+
+    text-shadow:
+        0 5px 30px rgba(0, 0, 0, 0.4);
+}
+
+
+
+
+.hero-content h1::first-line {
+    color: #ffffff;
+}
+
+
+
+
+.hero-content > p {
+
+    max-width: 700px;
+
+    margin: 0 auto;
+
+    font-size: 16px;
+
+    line-height: 1.8;
+
+    color: rgba(255, 255, 255, 0.82);
+}
+
+
+.choice-container {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(250px, 330px));
+
+    justify-content: center;
+
+    gap: 28px;
+
+    margin-top: 45px;
+}
+
+
+.choice-card {
+
+    position: relative;
+
+    overflow: hidden;
+
+    min-height: 245px;
+
+    padding: 35px 30px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    text-align: center;
+
+    color: #ffffff;
+
+    text-decoration: none;
+
+    border-radius: 24px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 255, 255, 0.16),
+            rgba(255, 255, 255, 0.06)
+        );
+
+    border: 1px solid rgba(255, 255, 255, 0.22);
+
+    box-shadow:
+        0 20px 50px rgba(0, 0, 0, 0.25);
+
+    backdrop-filter: blur(15px);
+
+    -webkit-backdrop-filter: blur(15px);
+
+    transition:
+        transform 0.35s ease,
+        background 0.35s ease,
+        box-shadow 0.35s ease;
+}
+
+
+
+
+.choice-card::before {
+
+    content: "";
+
+    position: absolute;
+
+    width: 180px;
+
+    height: 180px;
+
+    top: -90px;
+
+    right: -90px;
+
+    border-radius: 50%;
+
+    background: rgba(255, 255, 255, 0.12);
+
+    filter: blur(10px);
+
+    transition: 0.4s;
+}
+
+
+/* Hover */
+
+.choice-card:hover {
+
+    transform:
+        translateY(-12px)
+        scale(1.02);
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 255, 255, 0.24),
+            rgba(255, 255, 255, 0.1)
+        );
+
+    box-shadow:
+        0 30px 70px rgba(0, 0, 0, 0.4);
+}
+
+
+.choice-card:hover::before {
+
+    transform: scale(1.5);
+
+    opacity: 0.8;
+}
+
+
+
+
+.choice-icon {
+
+    width: 82px;
+
+    height: 82px;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    margin-bottom: 20px;
+
+    border-radius: 22px;
+
+    background:
+        rgba(255, 255, 255, 0.14);
+
+    border:
+        1px solid rgba(255, 255, 255, 0.25);
+
+    font-size: 38px;
+
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.2);
+
+    transition: 0.35s;
+}
+
+
+.choice-card:hover .choice-icon {
+
+    transform:
+        rotate(-5deg)
+        scale(1.08);
+}
+
+
+
+
+.choice-card h2 {
+
+    margin-bottom: 8px;
+
+    font-size: 21px;
+
+    font-weight: 600;
+}
+
+
+.choice-card p {
+
+    max-width: 240px;
+
+    font-size: 13px;
+
+    line-height: 1.6;
+
+    color: rgba(255, 255, 255, 0.72);
+}
+
+
+
+footer {
+
+    height: 65px;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    text-align: center;
+
+    background: #050b14;
+
+    border-top:
+        1px solid rgba(255, 255, 255, 0.08);
+
+    color: rgba(255, 255, 255, 0.6);
+
+    font-size: 13px;
+}
+
+
+footer strong {
+
+    color: #ffffff;
+
+    font-weight: 500;
+}
+
+
+
+.hero::after {
+
+    content: "";
+
+    position: absolute;
+
+    width: 500px;
+
+    height: 500px;
+
+    right: -250px;
+
+    bottom: -250px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(45, 125, 255, 0.12);
+
+    filter: blur(80px);
+
+    z-index: 1;
+
+    pointer-events: none;
+}
+
+
+
+
+@media (max-width: 800px) {
+
+    .navbar {
+
+        padding: 0 30px;
+    }
+
+
+    .hero-content {
+
+        padding-top: 90px;
+    }
+
+
+    .choice-container {
+
+        grid-template-columns:
+            repeat(2, minmax(220px, 300px));
+
+        gap: 18px;
+    }
+
+
+    .choice-card {
+
+        min-height: 220px;
+
+        padding: 25px 20px;
+    }
+
+}
+
+
+
+@media (max-width: 600px) {
+
+    .navbar {
+
+        height: 75px;
+
+        padding: 0 18px;
+    }
+
+
+    .logo-container {
+
+        gap: 10px;
+    }
+
+
+    .logo-container img {
+
+        width: 45px;
+
+        height: 45px;
+    }
+
+
+    .logo-container h2 {
+
+        font-size: 17px;
+    }
+
+
+    .logo-container span {
+
+        font-size: 9px;
+    }
+
+
+    .hero {
+
+        min-height: calc(100vh - 60px);
+
+        padding: 30px 0;
+    }
+
+
+    .hero-content {
+
+        padding-top: 70px;
+    }
+
+
+    .hero-content h1 {
+
+        font-size: 42px;
+
+        letter-spacing: -1px;
+    }
+
+
+    .hero-content > p {
+
+        font-size: 14px;
+
+        line-height: 1.7;
+    }
+
+
+    .choice-container {
+
+        grid-template-columns: 1fr;
+
+        gap: 16px;
+
+        margin-top: 30px;
+    }
+
+
+    .choice-card {
+
+        width: 100%;
+
+        max-width: 340px;
+
+        min-height: 200px;
+    }
+
+
+    footer {
+
+        height: 60px;
+
+        font-size: 12px;
+
+        padding: 0 15px;
+    }
+
+}
+
+
+
+@media (max-width: 380px) {
+
+    .hero-content h1 {
+
+        font-size: 35px;
+    }
+
+
+    .choice-icon {
+
+        width: 70px;
+
+        height: 70px;
+
+        font-size: 32px;
+    }
+
+}
+
+.hero {
+    position: relative;
+
+    min-height: calc(100vh - 65px);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    text-align: center;
+
+    overflow: hidden;
+
+    /* MAIN BACKGROUND IMAGE */
+    background-image: url("C:\\Users\\vansh\\OneDrive\\Desktop\\LOST & FOND APP\\images\\1687949012hmritm.jpg");
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.overlay {
+    position: absolute;
+    inset: 0;
+
+    background: linear-gradient(
+        135deg,
+        rgba(3, 12, 25, 0.88),
+        rgba(9, 31, 56, 0.72),
+        rgba(2, 10, 20, 0.85)
+    );
+
+    z-index: 1;
+}
