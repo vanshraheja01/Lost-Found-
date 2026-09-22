@@ -1,0 +1,22 @@
+.field {
+  display: flex;
+  flex-direction: column;
+  margin-top: 15px;
+}
+
+.field label {
+  margin-bottom: 6px;
+  font-weight: 600;
+  color: #333;
+  font-size: 14px;
+}
+
+.required {
+  color: #c0392b;
+}
+
+.error {
+  margin-top: 6px;
+  font-size: 12.5px;
+  color: #c0392b;
+}

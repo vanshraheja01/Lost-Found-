@@ -1,0 +1,22 @@
+.wrapper {
+  text-align: center;
+  padding: 70px 20px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.icon {
+  font-size: 42px;
+  margin-bottom: 14px;
+}
+
+.wrapper h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 6px;
+}
+
+.wrapper p {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.6);
+}

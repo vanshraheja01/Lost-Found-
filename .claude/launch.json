@@ -2,10 +2,10 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "lost-found-static",
-      "runtimeExecutable": "npx",
-      "runtimeArgs": ["--yes", "serve", "frontend", "-l", "4173"],
-      "port": 4173
+      "name": "lost-found-nextjs",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["./node_modules/next/dist/bin/next", "dev"],
+      "port": 3000
     }
   ]
 }
