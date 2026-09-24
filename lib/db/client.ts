@@ -1,16 +1,21 @@
-import { createClient } from "@libsql/client";
-import { drizzle } from "drizzle-orm/libsql";
+import postgres from "postgres";
+import { drizzle } from "drizzle-orm/postgres-js";
 import * as schema from "./schema";
 
-// Same SQLite-compatible (libSQL) client for both environments:
-// - Local dev: no env vars set -> falls back to a local file, zero signup.
-// - Vercel demo: TURSO_DATABASE_URL/TURSO_AUTH_TOKEN point at a free
-//   Turso database, since Vercel's serverless filesystem isn't persistent.
-const url = process.env.TURSO_DATABASE_URL ?? "file:./data/lostfound.db";
-const authToken = process.env.TURSO_AUTH_TOKEN;
+// Free hosted Postgres via Supabase. Use the "Connection pooling" (Transaction
+// mode, port 6543) URI from Project Settings -> Database -> Connection string -
+// required for serverless hosts like Vercel, which open many short-lived
+// connections that a direct Postgres connection isn't built to handle.
+const connectionString = process.env.DATABASE_URL;
 
-const client = createClient(
-  url.startsWith("file:") ? { url } : { url, authToken },
-);
+if (!connectionString) {
+  throw new Error(
+    "DATABASE_URL is not set. Add it to .env.local (see .env.example) with your Supabase connection string.",
+  );
+}
+
+// `prepare: false` is required for Supabase's transaction pooler (pgbouncer),
+// which doesn't support prepared statements.
+const client = postgres(connectionString, { prepare: false });
 
 export const db = drizzle(client, { schema });

@@ -1,7 +1,6 @@
-import { sql } from "drizzle-orm";
-import { sqliteTable, text } from "drizzle-orm/sqlite-core";
+import { pgTable, text, timestamp } from "drizzle-orm/pg-core";
 
-export const items = sqliteTable("items", {
+export const items = pgTable("items", {
   id: text("id").primaryKey(),
   type: text("type", { enum: ["lost", "found"] }).notNull(),
   itemName: text("item_name").notNull(),
@@ -14,9 +13,7 @@ export const items = sqliteTable("items", {
   contactName: text("contact_name").notNull(),
   email: text("email").notNull(),
   phone: text("phone"),
-  createdAt: text("created_at")
-    .notNull()
-    .default(sql`(current_timestamp)`),
+  createdAt: timestamp("created_at", { mode: "string" }).notNull().defaultNow(),
 });
 
 export type ItemRow = typeof items.$inferSelect;

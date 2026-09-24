@@ -21,21 +21,20 @@ Detailed reference for the Lost & Found app. See [README.md](README.md) for the 
 ## Architecture
 
 ```
-Browser → Next.js frontend (App Router) → Next.js Route Handlers → Drizzle ORM → SQLite / Turso
+Browser → Next.js frontend (App Router) → Next.js Route Handlers → Drizzle ORM → Postgres (Supabase)
 ```
 
 Everything — frontend and backend — is one Next.js app. There's no separate server process and nothing to host beyond a single Vercel (or any Node host) deployment.
 
 ## Database
 
-**Local dev:** a plain SQLite file at `data/lostfound.db` (gitignored — never commit real data). Zero signup, zero config.
+**[Supabase](https://supabase.com)** — a free hosted Postgres database (500 MB / 2 shared CPU projects free tier, no credit card required). Used for both local dev and production, via the "Connection pooling" (transaction mode, port 6543) connection string, which is safe for serverless hosts like Vercel that open many short-lived connections.
 
-**Temporary Vercel demo:** [Turso](https://turso.tech) — a hosted database that speaks the same SQLite wire protocol (libSQL). Vercel's serverless functions don't have a persistent filesystem, so a local `.db` file can't survive between requests once deployed; Turso solves that without changing a single line of application code.
-
-Both cases use the exact same client (`@libsql/client`) and schema (`lib/db/schema.ts`, defined with Drizzle ORM) — [lib/db/client.ts](lib/db/client.ts) just points at a local file or a remote URL depending on whether `TURSO_DATABASE_URL` is set:
+The client (`postgres` / postgres.js) and schema (`lib/db/schema.ts`, defined with Drizzle ORM) are set up in [lib/db/client.ts](lib/db/client.ts), reading a single `DATABASE_URL`:
 
 ```ts
-const url = process.env.TURSO_DATABASE_URL ?? "file:./data/lostfound.db";
+const connectionString = process.env.DATABASE_URL;
+const client = postgres(connectionString, { prepare: false }); // prepare:false required for Supabase's pooler
 ```
 
 **Schema** (`items` table):
@@ -54,7 +53,7 @@ const url = process.env.TURSO_DATABASE_URL ?? "file:./data/lostfound.db";
 | `contact_name` | text               |                                           |
 | `email`        | text               |                                           |
 | `phone`        | text, nullable     |                                           |
-| `created_at`   | text               | defaults to current timestamp            |
+| `created_at`   | timestamp          | defaults to `now()`                      |
 
 ## Image storage
 
@@ -91,7 +90,7 @@ components/
   Navbar, ItemForm, CameraCapture, ItemCard, SearchBar, DeleteItemButton,
   FormField, StatusBanner, LoadingSpinner, EmptyState   (each with a .module.css)
 lib/
-  db/client.ts   # Drizzle + libSQL client (local file or Turso)
+  db/client.ts   # Drizzle + postgres.js client (Supabase)
   db/schema.ts   # table schema
   db/items.ts    # create / list / get / delete queries
   validation.ts  # Zod schemas (shared by client + server)
@@ -102,17 +101,19 @@ public/images/   # logo.webp, hero.jpg
 
 ## Environment variables
 
-See [.env.example](.env.example). Both are optional and only used for a remote (Turso) database:
+See [.env.example](.env.example). Required for local dev and production alike (there's no local-file fallback with Postgres):
 
 ```
-TURSO_DATABASE_URL=
-TURSO_AUTH_TOKEN=
+DATABASE_URL=
 ```
+
+Get this from your Supabase project: **Project Settings → Database → Connection string → Connection pooling** tab (Transaction mode, port 6543).
 
 ## Local setup
 
 ```bash
 npm install
+cp .env.example .env.local   # then paste your Supabase DATABASE_URL in
 npm run db:push
 npm run dev
 ```
@@ -132,23 +133,19 @@ Two ways around it:
 
 ## Deploying to Vercel
 
-1. Create a free Turso database:
-   ```bash
-   turso db create lost-found
-   turso db show lost-found --url
-   turso db tokens create lost-found
-   ```
-2. Push the schema to it once (set `TURSO_DATABASE_URL`/`TURSO_AUTH_TOKEN` in your shell first):
+1. Create a free Supabase project at [supabase.com](https://supabase.com) (no card required).
+2. Grab the pooled connection string from **Project Settings → Database → Connection string → Connection pooling** (Transaction mode, port 6543), with your DB password filled in.
+3. Push the schema to it once (set `DATABASE_URL` in your shell first):
    ```bash
    npm run db:push
    ```
-3. Push this repo to GitHub, import it in Vercel, add `TURSO_DATABASE_URL` and `TURSO_AUTH_TOKEN` as Vercel project environment variables, and deploy.
+4. Push this repo to GitHub, import it in Vercel, add `DATABASE_URL` as a Vercel project environment variable, and deploy.
 
 ## Free-tier limits
 
-**Turso:** no credit card required to sign up (as of writing); generous free storage/row limits for a small demo; an idle free database can be paused after a period of inactivity. Treat it as a **temporary demo store**, not durable long-term data.
+**Supabase:** no credit card required to sign up (as of writing); 500 MB database storage and generous bandwidth on the free tier, more than enough for a small campus demo. A free project pauses after ~1 week of inactivity (restart it from the dashboard in a click). Treat it as a **demo-scale store**, not a guaranteed-uptime production database.
 
-**Removing it later:** `turso db destroy lost-found`, then delete the two env vars from the Vercel project.
+**Removing it later:** delete the project from the Supabase dashboard, then delete the `DATABASE_URL` env var from the Vercel project.
 
 ## Mobile / responsiveness
 
@@ -161,9 +158,9 @@ Two ways around it:
 
 - **No authentication** — anyone can view an item's contact info or delete any report. Acceptable for a small trusted campus tool; would need real auth for a wider audience.
 - **Images stored as base64 in the database** — fine at demo scale, not a pattern for large-scale production image hosting.
-- **Turso free tier isn't meant for permanent data** — the Vercel deployment is a temporary demo, not a production system.
+- **Supabase's free tier pauses idle projects** — the Vercel deployment is a demo, not a guaranteed-uptime production system.
 - **No rate limiting** on the API routes.
 
 ## What to say about this on a resume
 
-> Built a full-stack Lost & Found platform with Next.js (App Router) and TypeScript, using Drizzle ORM over a SQLite/libSQL database; implemented shared client/server Zod validation, camera-based image capture, and a searchable item browsing UI — deployed serverless on Vercel with zero recurring cost.
+> Built a full-stack Lost & Found platform with Next.js (App Router) and TypeScript, using Drizzle ORM over a Postgres (Supabase) database; implemented shared client/server Zod validation, camera-based image capture, and a searchable item browsing UI — deployed serverless on Vercel with zero recurring cost.

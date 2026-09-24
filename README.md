@@ -2,7 +2,7 @@
 
 A full-stack campus Lost & Found app: report a lost or found item, browse and search everything that's been reported, and view contact details for a match — all for ₹0, with no paid backend, database, or storage service.
 
-Built with **Next.js (App Router) + React + TypeScript**, a **Drizzle ORM / SQLite (libSQL)** database, and camera-capture image upload for found items.
+Built with **Next.js (App Router) + React + TypeScript**, a **Drizzle ORM / Postgres (Supabase)** database, and camera-capture image upload for found items.
 
 > For architecture decisions, the full API reference, deployment steps, and known limitations, see **[DOCUMENTATION.md](DOCUMENTATION.md)**.
 
@@ -19,11 +19,12 @@ Built with **Next.js (App Router) + React + TypeScript**, a **Drizzle ORM / SQLi
 
 ```bash
 npm install
-npm run db:push   # creates the local SQLite database + tables
+cp .env.example .env.local   # paste in your Supabase DATABASE_URL
+npm run db:push              # creates the tables in your Supabase database
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000). No environment variables are required for local development.
+Open [http://localhost:3000](http://localhost:3000). Needs a free [Supabase](https://supabase.com) project — see [DOCUMENTATION.md](DOCUMENTATION.md#environment-variables) for how to grab the connection string.
 
 > **Windows note:** if your project folder path contains an `&` (like the original `LOST & FOND APP` folder), `npm run <script>` can break due to a Windows/`cmd.exe` quirk — see [DOCUMENTATION.md](DOCUMENTATION.md#windows--in-path-gotcha) for the one-line workaround or fix.
 
@@ -35,7 +36,7 @@ Open [http://localhost:3000](http://localhost:3000). No environment variables ar
 | Forms      | react-hook-form + Zod (shared client/server schemas) |
 | Styling    | CSS Modules (no framework)                           |
 | Backend    | Next.js Route Handlers (`/api/items`)                |
-| Database   | Drizzle ORM over `@libsql/client` (SQLite / Turso)   |
+| Database   | Drizzle ORM over `postgres` (postgres.js) — Supabase |
 | Images     | Base64 data URLs stored on the item row              |
 
 ## Project structure

@@ -8,11 +8,8 @@
 # production
 /build
 
-# local database (SQLite file - never commit real data)
-/data/*.db
-/data/*.db-journal
-/data/*.db-shm
-/data/*.db-wal
+# leftover local SQLite file from before the Supabase/Postgres migration
+/data/
 
 # env files
 .env
