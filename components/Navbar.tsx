@@ -10,6 +10,7 @@ const NAV_LINKS = [
   { href: "/lost", label: "I Lost Something" },
   { href: "/found", label: "I Found Something" },
   { href: "/items", label: "Browse Items" },
+  { href: "/about", label: "About Me" },
 ];
 
 export default function Navbar() {

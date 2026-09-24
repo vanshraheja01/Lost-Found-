@@ -1,0 +1,299 @@
+/* Ported 1:1 from the AI Resume Analyzer About page (Tailwind -> CSS module).
+   Palette is scoped to this page so it matches the original exactly. */
+.page {
+  --background: #f8fafc;
+  --foreground: #0f172a;
+  --card: #ffffff;
+  --border: #e2e8f0;
+  --muted: #f1f5f9;
+  --muted-foreground: #64748b;
+  --primary: #4f46e5;
+  --serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+
+  --badge-info-bg: oklch(93% 0.034 272.788);
+  --badge-info-fg: oklch(45.7% 0.24 277.023);
+
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: var(--background);
+  color: var(--foreground);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@media (prefers-color-scheme: dark) {
+  .page {
+    --background: #0b1120;
+    --foreground: #e2e8f0;
+    --card: #111827;
+    --border: #1f2937;
+    --muted: #1e293b;
+    --muted-foreground: #94a3b8;
+    --primary: #6366f1;
+
+    --badge-info-bg: color-mix(in oklab, oklch(58.5% 0.233 277.117) 15%, transparent);
+    --badge-info-fg: oklch(67.3% 0.182 276.935);
+  }
+}
+
+:where(.page) :is(p, h1, h2) {
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+.main {
+  position: relative;
+  flex: 1;
+}
+
+/* --- Ambient glow -------------------------------------------------------- */
+.glowLayer {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+@keyframes float-blob {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(4%, -6%) scale(1.08); }
+  66% { transform: translate(-3%, 4%) scale(0.95); }
+}
+
+.heroGlow {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(72px);
+  opacity: 0.35;
+  animation: float-blob 16s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.glowPrimary {
+  left: -6rem;
+  top: 0;
+  width: 24rem;
+  height: 24rem;
+  background: var(--primary);
+}
+
+.glowEmerald {
+  right: -8rem;
+  top: 10rem;
+  width: 20rem;
+  height: 20rem;
+  background: oklch(76.5% 0.177 163.223);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .heroGlow {
+    animation: none;
+  }
+}
+
+/* --- Layout -------------------------------------------------------------- */
+.grid {
+  position: relative;
+  display: grid;
+  gap: 3rem;
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 5rem 1rem;
+}
+
+@media (min-width: 1024px) {
+  .grid {
+    grid-template-columns: 1.15fr 0.85fr;
+    align-items: start;
+  }
+
+  .photoColumn {
+    position: sticky;
+    /* original sits 5rem from the top; offset for the sticky site navbar */
+    top: calc(84px + 2.5rem);
+  }
+}
+
+/* --- Text ---------------------------------------------------------------- */
+.eyebrow {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--primary);
+}
+
+.name {
+  margin-top: 0.75rem;
+  background-image: linear-gradient(
+    to bottom right,
+    var(--foreground),
+    color-mix(in oklab, var(--foreground) 60%, transparent)
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-size: 3rem;
+  line-height: 1;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  padding-bottom: 0.1em;
+}
+
+@media (min-width: 640px) {
+  .name {
+    font-size: 3.75rem;
+  }
+}
+
+.lead {
+  margin-top: 1.5rem;
+  font-size: 1.125rem;
+  line-height: 1.625;
+  color: var(--muted-foreground);
+}
+
+.subheading {
+  margin-top: 2rem;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 1.5rem;
+  line-height: 2rem;
+  color: var(--primary);
+}
+
+.body {
+  line-height: 1.625;
+  color: var(--muted-foreground);
+}
+
+.mt3 { margin-top: 0.75rem; }
+.mt4 { margin-top: 1rem; }
+.mt6 { margin-top: 1.5rem; }
+.mt8 { margin-top: 2rem; }
+
+.motto {
+  margin-top: 2rem;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+  color: var(--primary);
+}
+
+/* --- Education card ------------------------------------------------------ */
+.eduCard {
+  margin-top: 2.5rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  background: var(--card);
+  padding: 1rem;
+}
+
+.eduIcon {
+  margin-top: 0.125rem;
+  width: 1.25rem;
+  height: 1.25rem;
+  flex-shrink: 0;
+  color: var(--primary);
+}
+
+.eduTitle {
+  font-weight: 600;
+}
+
+.eduSub {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: var(--muted-foreground);
+}
+
+/* --- Badges -------------------------------------------------------------- */
+.tagLabel {
+  margin-bottom: 0.75rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+  color: var(--muted-foreground);
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 9999px;
+  padding: 0.125rem 0.625rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 500;
+}
+
+.badgeInfo {
+  background: var(--badge-info-bg);
+  color: var(--badge-info-fg);
+}
+
+.badgeDefault {
+  background: var(--muted);
+  color: var(--muted-foreground);
+}
+
+/* --- Photo card ---------------------------------------------------------- */
+.photoCard {
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  box-shadow:
+    0 10px 15px -3px rgb(0 0 0 / 0.1),
+    0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
+.photoFrame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+}
+
+.photo {
+  object-fit: cover;
+}
+
+.photoCaption {
+  background: var(--foreground);
+  color: var(--background);
+  padding: 1rem 1.25rem;
+}
+
+.captionName {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+}
+
+.captionRole {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  opacity: 0.7;
+}
+
+.photoMotto {
+  margin-top: 1rem;
+  text-align: center;
+  font-family: var(--serif);
+  font-style: italic;
+  color: var(--primary);
+}
