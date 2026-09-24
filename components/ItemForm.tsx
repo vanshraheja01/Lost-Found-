@@ -2,10 +2,11 @@
 
 import { ChangeEvent, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import FormField from "./FormField";
 import CameraCapture from "./CameraCapture";
+import Dropdown from "./Dropdown";
 import StatusBanner from "./StatusBanner";
 import { lostItemSchema, foundItemSchema, type CreateItemPayload } from "@/lib/validation";
 import { ITEM_CATEGORIES } from "@/types/item";
@@ -24,6 +25,7 @@ export default function ItemForm({ type }: ItemFormProps) {
 
   const {
     register,
+    control,
     handleSubmit,
     formState: { errors, isSubmitting },
     reset,
@@ -106,18 +108,22 @@ export default function ItemForm({ type }: ItemFormProps) {
       </FormField>
 
       <FormField label="Category" htmlFor="category" required error={errors.category?.message}>
-        <div className={styles.selectWrap}>
-          <select id="category" className={styles.select} defaultValue="" {...register("category")}>
-            <option value="" disabled>
-              Select category
-            </option>
-            {ITEM_CATEGORIES.map((category) => (
-              <option key={category} value={category}>
-                {category}
-              </option>
-            ))}
-          </select>
-        </div>
+        <Controller
+          name="category"
+          control={control}
+          defaultValue={undefined}
+          render={({ field }) => (
+            <Dropdown
+              id="category"
+              value={field.value ?? ""}
+              onChange={field.onChange}
+              onBlur={field.onBlur}
+              options={ITEM_CATEGORIES}
+              placeholder="Select category"
+              invalid={!!errors.category}
+            />
+          )}
+        />
       </FormField>
 
       <FormField label="Color" htmlFor="color" required={type === "lost"} error={errors.color?.message}>
